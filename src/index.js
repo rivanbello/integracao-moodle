@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios');
 var fs = require('fs');
 
 const app = express();
@@ -8,36 +9,63 @@ app.use(express.json());
 app.use(express.urlencoded());
 
 const file = './src/vendas.json';
+const moodleURl = 'http://nascidodenovo.org/moodle30/webservice/rest/server.php?wstoken=ee542db42f9ef8002f44eb04d5ac2e26&moodlewsrestformat=json';
 
-app.post('/venda', (request, response) => {
+app.post('/venda', async (request, response) => {
   const { email, name, first_name, last_name, purchase_date} = request.body;
 
-  var obj = [];
-  fs.readFile(file, 'utf8', function (err, data) {
-    if (err) throw err;
-    
-    console.log('data', data);
-    obj = JSON.parse(data);
+  saveInFile(purchase_date, email, name);
 
-    console.log('obj', obj);
+  //verificar se o email não existe no moodle
+  const wsFunction = '&wsfunction=core_user_get_users';
+  const key = '&criteria[0][key]=email';
+  const value ='&criteria[0][value]=' + email;
+
+  var moodleResponse = {};
+
+  await axios
+  .post(moodleURl + wsFunction + key + value)
+  .then(res => {
+    moodleResponse = res.data.users;
+  })
+  .catch(error => {
+    console.error(error)
   });
 
-  obj.push({
-    date: new Date(purchase_date),
-    email,
-    name,
-  });
+  //verificar se usuario ja existe
+  if(moodleResponse.length){
+    return response.json({message: 'Usário ja existe na base do moodle.'});
+  }
+  else //Caso nao exista adicionar no moddle
+  {
+    const wsFunction = '&wsfunction=core_user_create_users';
+    var users = {
+        'users[0][username]': first_name.toLowerCase() + '.' + last_name.toLowerCase(),
+        'users[0][createpassword]': 1,
+        'users[0][firstname]': first_name,
+        'users[0][lastname]': last_name,
+        'users[0][email]': email
+      };
 
-  console.log(obj);
+    const formUrlEncoded = function (x) {
+      return Object.keys(x).reduce((p, c) => p + `&${c}=${encodeURIComponent(x[c])}`, '')
+    }; 
 
-  fs.writeFile(file, JSON.stringify(obj) , 'utf-8', function(erro) {
-      
-    if(erro) {
-          throw erro;
-      }
+    axios.post(moodleURl+wsFunction, formUrlEncoded(users), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    })
+    .then(res => {
+      moodleResponse = res.data
+      console.log(res.data);
+      //Salvar no arquivo vendas.json
+      saveInFile(purchase_date, email, name)
+    })
+    .catch(error => {
+      console.error(error)
+    });
+  }
 
-      return response.json({message: "Venda regristada com suscesso!"})
-  });  
+  return response.json({resposta : 'moodleResponse'});
 });
 
 app.get('/listar-vendas', (request, response) => {
@@ -50,3 +78,24 @@ app.get('/listar-vendas', (request, response) => {
 app.listen(process.env.PORT || 3333, () => {
   console.log('Back-end started!');
 });
+
+function saveInFile(purchase_date, email, name) {
+  var obj = [];
+  
+  var rawdata = fs.readFileSync(file);
+  var obj = JSON.parse(rawdata);
+  console.log(obj);
+
+  obj.push({
+    date: new Date(purchase_date),
+    email,
+    name,
+  });
+
+  console.log(obj);
+
+  fs.writeFile(file, JSON.stringify(obj) , {enconding:'utf-8',flag: 'w'}, function(err) {
+    if (err) throw err;
+    return true;
+  });  
+}
