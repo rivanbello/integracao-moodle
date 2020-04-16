@@ -15,7 +15,11 @@ app.post('/venda', (request, response) => {
   var obj = [];
   fs.readFile(file, 'utf8', function (err, data) {
     if (err) throw err;
+    
+    console.log('data', data);
     obj = JSON.parse(data);
+
+    console.log('obj', obj);
   });
 
   obj.push({
@@ -23,6 +27,8 @@ app.post('/venda', (request, response) => {
     email,
     name,
   });
+
+  console.log(obj);
 
   fs.writeFile(file, obj ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
       
