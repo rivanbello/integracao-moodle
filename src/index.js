@@ -6,7 +6,7 @@ const app = express();
 //Necessário para usar na requisições post o recurso JSON
 app.use(express.json());
 
-app.post('/venda?', (request, response) => {
+app.post('/venda', (request, response) => {
   const { query } = request;
   fs.writeFile("./src/vendas.txt", `${JSON.stringify(query)}` ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
       
