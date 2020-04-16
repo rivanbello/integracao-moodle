@@ -7,10 +7,24 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.post('/venda', (request, response) => {
-  const body = request.body;
+const file = './src/vendas.txt';
 
-  fs.writeFile("./src/vendas.txt", `${JSON.stringify(body)}` ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
+app.post('/venda', (request, response) => {
+  const { email, name, first_name, last_name, purchase_date} = request.body;
+
+  var obj;
+  fs.readFile(file, 'utf8', function (err, data) {
+    if (err) throw err;
+    obj = JSON.parse(data);
+  });
+
+  obj.push({
+    date: new Date(purchase_date),
+    email,
+    name,
+  });
+
+  fs.writeFile(file, obj ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
       
     if(erro) {
           throw erro;
@@ -21,7 +35,7 @@ app.post('/venda', (request, response) => {
 });
 
 app.get('/listar-vendas', (request, response) => {
-  fs.readFile('./src/vendas.txt', 'utf8', function(err, data) {
+  fs.readFile(file, 'utf8', function(err, data) {
     if (err) throw err;
     return response.json(data);
   });
