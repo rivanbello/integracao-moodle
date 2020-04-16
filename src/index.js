@@ -12,6 +12,10 @@ app.use(express.json());
 
 const projects =[];
 
+app.get('/testar', (request, response) => {
+  return response.json({message: "Teste executado!"})
+});
+
 app.get('/notificarVenda', (request, response) => {
   console.log(request);
 });
