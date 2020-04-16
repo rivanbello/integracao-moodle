@@ -11,6 +11,7 @@ app.post('/venda', (request, response) => {
   const query = request.query;
   const params = request.params;
 
+  console.log('request', request)
   console.log('body', body);
   console.log('query', query);
   console.log('params', params);
