@@ -30,7 +30,7 @@ app.post('/venda', (request, response) => {
 
   console.log(obj);
 
-  fs.writeFile(file, obj ,{enconding:'utf-8',flag: 'r'}, function(erro) {
+  fs.writeFile(file, JSON.stringify(obj) , 'utf-8', function(erro) {
       
     if(erro) {
           throw erro;
