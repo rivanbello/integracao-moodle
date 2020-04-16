@@ -10,7 +10,12 @@ app.post('/venda', (request, response) => {
   const body = request.body;
   const query = request.query;
   const params = request.params;
-  fs.writeFile("./src/vendas.txt", `${params}` ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
+
+  console.log('body', body);
+  console.log('query', query);
+  console.log('params', params);
+
+  fs.writeFile("./src/vendas.txt", `${JSON.stringify(params)}` ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
       
     if(erro) {
           throw erro;
