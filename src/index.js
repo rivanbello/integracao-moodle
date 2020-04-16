@@ -10,11 +10,6 @@ app.use(express.urlencoded());
 app.post('/venda', (request, response) => {
   const body = request.body;
 
-  console.log('request', request)
-  console.log('body', body);
-  console.log('query', query);
-  console.log('params', params);
-
   fs.writeFile("./src/vendas.txt", `${JSON.stringify(body)}` ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
       
     if(erro) {
