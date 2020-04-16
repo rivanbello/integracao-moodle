@@ -1,11 +1,6 @@
 const express = require('express');
-const cors = require('cors');
-const { uuid, isUuid } = require('uuidv4');
 
 const app = express();
-
-//Qualquer front terá acesso esse back end
-app.use(cors());
 
 //Necessário para usar na requisições post o recurso JSON
 app.use(express.json());
