@@ -7,12 +7,8 @@ app.use(express.json());
 
 const projects =[];
 
-app.get('/testar', (request, response) => {
+app.get('/venda', (request, response) => {
   return response.json({message: "Teste executado!"})
-});
-
-app.get('/notificarVenda', (request, response) => {
-  console.log(request);
 });
 
 app.listen(process.env.PORT || 3333, () => {
