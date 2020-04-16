@@ -5,6 +5,7 @@ const app = express();
 
 //Necessário para usar na requisições post o recurso JSON
 app.use(express.json());
+app.use(express.urlencoded());
 
 app.post('/venda', (request, response) => {
   const body = request.body;
