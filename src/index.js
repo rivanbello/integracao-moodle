@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.post('/venda', (request, response) => {
   const { query } = request;
-  fs.writeFile("./src/vendas.txt", `${JSON.stringify(query)},` ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
+  fs.writeFile("./src/vendas.txt", `${JSON.stringify(request)},` ,{enconding:'utf-8',flag: 'a+'}, function(erro) {
       
     if(erro) {
           throw erro;
