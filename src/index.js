@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded());
 
-const file = './src/vendas.txt';
+const file = './src/vendas.json';
 
 app.post('/venda', (request, response) => {
   const { email, name, first_name, last_name, purchase_date} = request.body;
