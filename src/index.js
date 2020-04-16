@@ -43,7 +43,7 @@ app.post('/venda', (request, response) => {
 app.get('/listar-vendas', (request, response) => {
   fs.readFile(file, 'utf8', function(err, data) {
     if (err) throw err;
-    return response.json(data);
+    return response.json(JSON.parse(data));
   });
 });
 
