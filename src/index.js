@@ -40,8 +40,9 @@ app.post('/venda', async (request, response) => {
   {
     console.log('Criando usuário no moodle.')
     const wsFunction = '&wsfunction=core_user_create_users';
+    var username = removeAcento(first_name.toLowerCase() + '.' + last_name.toLowerCase());
     var users = {
-        'users[0][username]': first_name.toLowerCase() + '.' + last_name.toLowerCase(),
+        'users[0][username]': username,
         'users[0][createpassword]': 1,
         'users[0][firstname]': first_name,
         'users[0][lastname]': last_name,
@@ -122,4 +123,16 @@ function saveInFile(purchase_date, email, name) {
     if (err) throw err;
     return true;
   });  
+}
+
+function removeAcento (text)
+{       
+    text = text.toLowerCase();                                                         
+    text = text.replace(new RegExp('[ÁÀÂÃ]','gi'), 'a');
+    text = text.replace(new RegExp('[ÉÈÊ]','gi'), 'e');
+    text = text.replace(new RegExp('[ÍÌÎ]','gi'), 'i');
+    text = text.replace(new RegExp('[ÓÒÔÕ]','gi'), 'o');
+    text = text.replace(new RegExp('[ÚÙÛ]','gi'), 'u');
+    text = text.replace(new RegExp('[Ç]','gi'), 'c');
+    return text;                 
 }
