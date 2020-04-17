@@ -87,7 +87,6 @@ function saveInFile(purchase_date, email, name) {
   
   var rawdata = fs.readFileSync(file);
   var obj = JSON.parse(rawdata);
-  console.log(obj);
 
   obj.push({
     date: new Date(purchase_date),
