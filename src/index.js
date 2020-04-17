@@ -56,14 +56,38 @@ app.post('/venda', async (request, response) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     })
     .then(res => {
+      console.log('Usuário criado no moodle!');
       moodleResponse = res.data
       console.log(res.data);
-      //Salvar no arquivo vendas.json
-      saveInFile(purchase_date, email, name)
+
+      //Increver usuário no curso
+      console.log('Vinculando o usuario ao curso...');
+      var subscribe = {
+        'enrolments[0][roleid]':1,
+        'enrolments[0][userid]': moodleResponse[0].id,
+        'enrolments[0][courseid]':2
+      };
+
+      const wsFunction2 = '&wsfunction=enrol_manual_enrol_users';
+      axios.post(moodleURl+wsFunction2, formUrlEncoded(subscribe), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      })
+      .then(res => {
+        if (res.data === null)
+        {
+          console.log('Usuário vinculado ao curso.');
+        }
+
+        //Salvar no arquivo vendas.json
+        saveInFile(purchase_date, email, name);
+      })
+      .catch(error => {
+        console.error(error)
+      });
     })
     .catch(error => {
       console.error(error)
-    });
+    });    
   }
 
   return response.json({resposta : moodleResponse});
@@ -92,7 +116,7 @@ function saveInFile(purchase_date, email, name) {
     name,
   });
 
-  console.log(obj);
+  console.log('Lista de vendas', obj);
 
   fs.writeFile(file, JSON.stringify(obj) , {enconding:'utf-8',flag: 'w'}, function(err) {
     if (err) throw err;
