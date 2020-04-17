@@ -65,7 +65,7 @@ app.post('/venda', async (request, response) => {
     });
   }
 
-  return response.json({resposta : 'moodleResponse'});
+  return response.json({resposta : moodleResponse});
 });
 
 app.get('/listar-vendas', (request, response) => {
