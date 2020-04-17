@@ -101,7 +101,7 @@ app.get('/listar-vendas', (request, response) => {
   });
 });
 
-app.listen(process.env.PORT || 3333, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log('Back-end started!');
 });
 
