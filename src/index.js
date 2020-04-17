@@ -14,8 +14,6 @@ const moodleURl = 'http://nascidodenovo.org/moodle30/webservice/rest/server.php?
 app.post('/venda', async (request, response) => {
   const { email, name, first_name, last_name, purchase_date} = request.body;
 
-  saveInFile(purchase_date, email, name);
-
   //verificar se o email não existe no moodle
   const wsFunction = '&wsfunction=core_user_get_users';
   const key = '&criteria[0][key]=email';
