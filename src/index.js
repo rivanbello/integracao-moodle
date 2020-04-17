@@ -34,6 +34,7 @@ app.post('/venda', async (request, response) => {
 
   //verificar se usuario ja existe
   if(moodleResponse.length){
+    console.log('Usário ja existe na base do moodle.');
     return response.json({message: 'Usário ja existe na base do moodle.'});
   }
   else //Caso nao exista adicionar no moddle
