@@ -23,6 +23,7 @@ app.post('/venda', async (request, response) => {
 
   var moodleResponse = {};
 
+  console.log('Verificando se usuário existe no moodle.')
   await axios
   .post(moodleURl + wsFunction + key + value)
   .then(res => {
@@ -39,6 +40,7 @@ app.post('/venda', async (request, response) => {
   }
   else //Caso nao exista adicionar no moddle
   {
+    console.log('Criando usuário no moodle.')
     const wsFunction = '&wsfunction=core_user_create_users';
     var users = {
         'users[0][username]': first_name.toLowerCase() + '.' + last_name.toLowerCase(),
