@@ -64,7 +64,7 @@ app.post('/venda', async (request, response) => {
       //Increver usuário no curso
       console.log('Vinculando o usuario ao curso...');
       var subscribe = {
-        'enrolments[0][roleid]':1,
+        'enrolments[0][roleid]':5,
         'enrolments[0][userid]': moodleResponse[0].id,
         'enrolments[0][courseid]':2
       };
