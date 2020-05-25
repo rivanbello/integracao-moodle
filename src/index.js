@@ -43,7 +43,7 @@ app.post('/venda', async (request, response) => {
     var username = removeAcento(first_name.toLowerCase() + '.' + last_name.toLowerCase());
     var users = {
         'users[0][username]': username,
-        'users[0][createpassword]': 1,
+        'users[0][createpassword]': 0,
         'users[0][firstname]': first_name,
         'users[0][lastname]': last_name,
         'users[0][email]': email
@@ -116,8 +116,6 @@ function saveInFile(purchase_date, email, name) {
     email,
     name,
   });
-
-  console.log('Lista de vendas', obj);
 
   fs.writeFile(file, JSON.stringify(obj) , {enconding:'utf-8',flag: 'w'}, function(err) {
     if (err) throw err;
