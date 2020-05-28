@@ -43,7 +43,9 @@ app.post('/venda', async (request, response) => {
     var username = removeAcento(first_name.toLowerCase() + '.' + last_name.toLowerCase());
     var users = {
         'users[0][username]': username,
-        'users[0][createpassword]': 0,
+        'users[0][createpassword]': 1,
+        'users[0][preferences][0][type]': auth_forcepasswordchange,
+        'users[0][preferences][0][value]': 0,
         'users[0][firstname]': first_name,
         'users[0][lastname]': last_name,
         'users[0][email]': email
