@@ -44,7 +44,7 @@ app.post('/venda', async (request, response) => {
     var users = {
         'users[0][username]': username,
         'users[0][createpassword]': 1,
-        'users[0][preferences][0][type]': auth_forcepasswordchange,
+        'users[0][preferences][0][type]': 'auth_forcepasswordchange',
         'users[0][preferences][0][value]': 0,
         'users[0][firstname]': first_name,
         'users[0][lastname]': last_name,
